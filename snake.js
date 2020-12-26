@@ -101,13 +101,13 @@ function update() {
 
 }
 
-function render() {
+function draw() {
     ctx.fillStyle = "#56a381"; //snake green
     let body;
     for (body of snake) {
         ctx.fillRect(body[0] * scale, body[1] * scale, scale, scale);
     }
-    ctx.fillStyle = "#fc6272";
+    ctx.fillStyle = "#fc6272"; //apple red
     ctx.fillRect(apple[0]*scale, apple[1]*scale, scale, scale);
 }
 
@@ -116,8 +116,8 @@ reset();
 let game = setInterval(() => {
     update();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    render();
-    buffer = false;
+    draw();
+    buffer = false; //allow input
 }, 100);
 
 //smoother snake movement
