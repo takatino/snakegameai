@@ -36,6 +36,7 @@ document.addEventListener("keydown", function(e) {
 let snake = [];
 let apple = [];
 let initialLength = 5;
+let nextPos = [];
 
 
 function relocateApple(){
@@ -54,7 +55,6 @@ function relocateApple(){
             }
         }
     }
-    console.log(grid.length);
     apple = grid[Math.floor(Math.random() * grid.length)];
 }
 
@@ -66,13 +66,14 @@ function reset() {
     }
     xSpeed = 1;
     ySpeed = 0;
+    nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
     relocateApple();
 }
 
 function update() {
-    let nextPos = [(snake[0][0] + xSpeed) % columns, (snake[0][1] + ySpeed) % rows];
-    if (nextPos[0] == -1) {nextPos[0] = columns - 1}
-    if (nextPos[1] == -1) {nextPos[1] = rows - 1}
+    nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
+    if (nextPos[0] == 20 || nextPos[0] < 0) {reset();}
+    if (nextPos[1] == 20 || nextPos[1] < 0) {reset();}
 
     if (nextPos[0] == apple[0] && nextPos[1] == apple[1]){
         snake.push([-1, -1]);   
@@ -112,6 +113,11 @@ function draw() {
 }
 
 reset();
+
+network = new Network([4, 3, 3, 3]);
+for (a in network.weights) {
+    console.log(network.weights[a]);
+}
 
 let game = setInterval(() => {
     update();
