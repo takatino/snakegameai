@@ -1,5 +1,5 @@
 class Network {
-    constructor(sizes) { //number of neurons for each layer
+    constructor(sizes) { //number of neurons for each layer ie "[4, 3, 3, 3]"
         this.numberOfLayers = sizes.length;
         this.sizes = sizes;
         this.biases = [];
@@ -25,7 +25,7 @@ class Network {
         return input;
     }
 
-    
+
 }
 
 function sigmoid(z) {
