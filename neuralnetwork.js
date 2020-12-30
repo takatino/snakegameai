@@ -4,15 +4,18 @@ class Network {
         this.sizes = sizes;
         this.biases = [];
         this.weights = [];
+
+
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
-            this.biases[i] = [Math.random()];
+            this.biases[i] = [randomG()];
         }
+
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
-            this.weights[i] = [new Array(sizes[i+1])];
-            for (let j = 0; j < sizes[i+1]; j++) {
-                this.weights[i][j] = new Array(sizes[i]);
-                for (let k = 0; k < sizes[i]; k++) {
-                    this.weights[i][j][k] = Math.random();
+            this.weights[i] = [new Array(this.sizes[i+1])];
+            for (let j = 0; j < this.sizes[i+1]; j++) {
+                this.weights[i][j] = new Array(this.sizes[i]);
+                for (let k = 0; k < this.sizes[i]; k++) {
+                    this.weights[i][j][k] = randomG();
                 }
             }
         }
@@ -25,6 +28,37 @@ class Network {
         return input;
     }
 
+    randomize(){
+        for (let i = 0; i < this.numberOfLayers - 1; i++) {
+            this.biases[i] = [randomG()];
+        }
+
+        for (let i = 0; i < this.numberOfLayers - 1; i++) {
+            this.weights[i] = [new Array(this.sizes[i+1])];
+            for (let j = 0; j < this.sizes[i+1]; j++) {
+                this.weights[i][j] = new Array(this.sizes[i]);
+                for (let k = 0; k < this.sizes[i]; k++) {
+                    this.weights[i][j][k] = randomG();
+                }
+            }
+        }
+
+        return;
+    }
+
+    load(w, b) {
+        for (let i = 0; i < this.numberOfLayers - 1; i++) {
+            this.biases[i] = b[i];
+        }
+
+        for (let i = 0; i < this.numberOfLayers - 1; i++) {
+            for (let j = 0; j < this.sizes[i+1]; j++) {
+                for (let k = 0; k < this.sizes[i]; k++) {
+                    this.weights[i][j][k] = w[i][j][k];
+                }
+            }
+        }
+    }
 
 }
 
@@ -32,4 +66,12 @@ function sigmoid(z) {
     return z.map(function(value) {
         return 1/(1 + math.exp(-value));
     })
+}
+
+function randomG(){ 
+    let r = 0;
+    for(let i = 3; i > 0; i--){
+        r += math.random();
+    }
+    return (r / 3);
 }

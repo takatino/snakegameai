@@ -7,8 +7,10 @@ const columns = canvas.width / scale;
 
 let xSpeed = 1;
 let ySpeed = 0;
+let direction = "right"; //right, up, left, down
 let buffer = false;
 
+/*
 document.addEventListener("keydown", function(e) {
     if (e.keyCode == 37 && xSpeed == 0 && buffer == false) { // Player holding left
         xSpeed = -1;
@@ -31,13 +33,67 @@ document.addEventListener("keydown", function(e) {
         buffer = true;
     }
 });
-
+*/
 
 let snake = [];
 let apple = [];
 let initialLength = 5;
 let nextPos = [];
+let score = 0;
+let myNumber = -1;
 
+
+function turn(d) {
+    if (d == "left") {
+        switch(direction) {
+            case "right":
+                xSpeed = 0;
+                ySpeed = -1;
+                direction = "up";
+                break;
+            case "up":
+                xSpeed = -1;
+                ySpeed = 0;
+                direction = "left";
+                break;
+            case "left":
+                xSpeed = 0;
+                ySpeed = 1;
+                direction = "down";
+                break;
+            case "down":
+                xSpeed = 1;
+                ySpeed = 0;
+                direction = "right";
+                break;
+        }
+    }
+
+    else if (d == "right") {
+        switch(direction) {
+            case "right":
+                xSpeed = 0;
+                ySpeed = 1;
+                direction = "down";
+                break;
+            case "up":
+                xSpeed = 1;
+                ySpeed = 0;
+                direction = "right";
+                break;
+            case "left":
+                xSpeed = 0;
+                ySpeed = -1;
+                direction = "up";
+                break;
+            case "down":
+                xSpeed = -1;
+                ySpeed = 0;
+                direction = "left";
+                break;
+        }
+    }
+}
 
 function relocateApple(){
     let grid = [];
@@ -60,14 +116,27 @@ function relocateApple(){
 
 function reset() {
     snake = [];
-    let i;
-    for (i = 0; i < initialLength; i++) {
+    for (let i = 0; i < initialLength; i++) {
         snake.push([Math.floor(columns/2) - i, Math.floor(rows/2)]);
     }
     xSpeed = 1;
     ySpeed = 0;
+    direction = "right";
     nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
     relocateApple();
+
+    if (myNumber >= 0) {
+        population[myNumber][0] = score;
+    }
+
+    if (myNumber == 49) {
+        myNumber = -1;
+    }
+
+    myNumber += 1;
+    score = 0;
+    network.load(population[myNumber][1], population[myNumber][2]);
+
 }
 
 function update() {
@@ -85,6 +154,7 @@ function update() {
                 return;
             } 
         }
+        score += 50;
         relocateApple();
     }
     else {
@@ -112,18 +182,74 @@ function draw() {
     ctx.fillRect(apple[0]*scale, apple[1]*scale, scale, scale);
 }
 
-reset();
-
-network = new Network([4, 3, 3, 3]);
-for (a in network.weights) {
-    console.log(network.weights[a]);
+function compileScene() {
+    scene = new Array(1200).fill([0]);
+    snake.forEach(function(value, index) {
+        if (index < 1) {
+            scene[value[0]*20 + value[1]] = [1];
+        }
+        
+        scene[400 + value[0]*20 + value[1]] = [1]; 
+    });
+    scene[800 + apple[0]*20 + apple[1]] = [1];
 }
 
-let game = setInterval(() => {
+function think() {
+    compileScene();
+    let output = network.feedforward(scene);
+
+    let max = output[0];
+    let maxIndex = 0;
+
+    for (let i = 1; i < output.length; i++) {
+        if (output[i] > max) {
+            maxIndex = i;
+            max = output[i];
+        }
+    }
+
+    switch (maxIndex) {
+        case 0:
+            break;
+        case 1:
+            turn("right");
+            break;
+        case 2:
+            turn("left");
+            break;
+    }
+}
+
+/*
+function main() {
     update();
+    think();
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     draw();
-    buffer = false; //allow input
+    //buffer = false; //allow input
+
+    score += 1; // score for being alive
+
+    requestAnimationFrame(main);
+}*/
+
+network = new Network([1200, 16, 16, 3]);
+console.log(network.weights);
+
+populate();
+console.log(population);
+reset();
+//main();
+
+
+let main = setInterval(() => {
+    update();
+    think();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    draw();
+    //buffer = false; //allow input
+
+    score += 1; // score for being alive
 }, 100);
 
 //smoother snake movement
