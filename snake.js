@@ -43,7 +43,7 @@ let score = 1;
 let myNumber = -1;
 let running = 1;
 let generation = 0;
-
+let generationFitness = [];
 
 function turn(d) {
     if (d == "left") {
@@ -234,7 +234,7 @@ function main() {
     draw();
     //buffer = false; //allow input
 
-    score += 1; // score for being alive
+    score += Math.sqrt((snake[0][0] - apple[0])**2 + (snake[0][1] - apple[1])**2)/(20 * Math.sqrt(2)) / 10; // score for being alive
 
     requestAnimationFrame(main);
 }

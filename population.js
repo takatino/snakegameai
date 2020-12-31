@@ -14,6 +14,8 @@ function naturalSelection(mutationRate){
     }
     
     let averageFitness = totalFitness / population.length;
+    generationFitness.push(averageFitness);
+
     console.log("^ Generation " + generation);
     console.log("^ Average Fitness " + averageFitness);
 
