@@ -19,8 +19,14 @@ function naturalSelection(mutationRate){
 
     for (let i = 0; i < population.length; i++) {
         population[i][0] /= totalFitness;
+    }
+
+    for (let i = population.length - 1; i > 0; i--) {
+        accumFitness = 0;
+        for (let j = 0; j < i; j++) {
+            accumFitness += JSON.parse(JSON.stringify(population[j][0]));
+        }
         population[i][0] += accumFitness;
-        accumFitness += population[i][0] - accumFitness; 
     }
 
 

@@ -131,7 +131,7 @@ function reset() {
         population[myNumber][0] = score;
     }
 
-    if (myNumber == 49) { //end of generation
+    if (myNumber == population.length - 1) { //end of generation
         myNumber = -1;
         generation += 1;
         console.log(population);
@@ -239,9 +239,9 @@ function main() {
     requestAnimationFrame(main);
 }
 
-network = new Network([1200, 16, 16, 16, 16, 3]); //network size
+network = new Network([1200, 16, 16, 3]); //network size
 
-populate(50);
+populate(100);
 reset();
 main();
 
