@@ -13,11 +13,16 @@ function naturalSelection(mutationRate){
         totalFitness += population[i][0];
     }
     
+    let averageFitness = totalFitness / population.length;
+    console.log("^ Generation " + generation);
+    console.log("^ Average Fitness " + averageFitness);
+
     for (let i = 0; i < population.length; i++) {
         population[i][0] /= totalFitness;
         population[i][0] += accumFitness;
         accumFitness += population[i][0] - accumFitness; 
     }
+
 
     let selector = 0;
     let parentA = [];
@@ -25,34 +30,38 @@ function naturalSelection(mutationRate){
     let newpopulation = [];
 
     for (let i = 0; i < population.length; i++) {
-        selector = Math.random();
+        selector = math.random();
+
         if (selector <= population[0][0]) {
             parentA = population[0];
         }
-        if (selector > population[population.length - 2][0]) {
+        else if (selector > population[population.length - 2][0]) {
             parentA = population[population.length - 1];
         }
+        else {
+            for (let j = 1; j < population.length; j++) {
+                if (population[j][0] > selector && population[j-1][0] <= selector) {
+                    parentA = population[j-1];
+                }
 
-        for (let j = 1; j < population.length; j++) {
-            if (population[j][0] > selector) {
-                parentA = population[j-1];
             }
-
         }
 
-        selector = Math.random();
+
+        selector = math.random();
         if (selector <= population[0][0]) {
             parentB = population[0];
         }
-        if (selector > population[population.length - 2][0]) {
+        else if (selector > population[population.length - 2][0]) {
             parentB = population[population.length - 1];
         }
 
-        for (let j = 1; j < population.length; j++) {
-            if (population[j][0] > selector) {
-                parentB = population[j-1];
+        else {
+            for (let j = 1; j < population.length; j++) {
+                if (population[j][0] > selector && population[j-1][0] <= selector) {
+                    parentB = population[j-1];
+                }
             }
-
         }
 
         let baby = [0, JSON.parse(JSON.stringify(parentA[1])), JSON.parse(JSON.stringify(parentA[2]))];
@@ -61,10 +70,10 @@ function naturalSelection(mutationRate){
             for (let k = 0; k < parentA[1][j].length; k++) {
                 for (let l = 0; l < parentA[1][j][k].length; l++) {
                     if (Math.random() < 0.5) {
-                        baby[1][j][k][l] = parentA[1][j][k][l];
+                        baby[1][j][k][l] = JSON.parse(JSON.stringify(parentA[1][j][k][l]));
                     }
                     else {
-                        baby[1][j][k][l] = parentB[1][j][k][l];
+                        baby[1][j][k][l] = JSON.parse(JSON.stringify(parentB[1][j][k][l]));
                     }
 
                     if (Math.random() < mutationRate) {
@@ -90,7 +99,7 @@ function naturalSelection(mutationRate){
         }
 
         baby[0] = 1; //score
-        newpopulation.push(baby);
+        newpopulation.push(JSON.parse(JSON.stringify(baby)));
     }
 
     population = JSON.parse(JSON.stringify(newpopulation));

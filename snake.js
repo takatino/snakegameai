@@ -134,7 +134,6 @@ function reset() {
     if (myNumber == 49) { //end of generation
         myNumber = -1;
         generation += 1;
-        console.log("Generation " + generation);
         console.log(population);
         naturalSelection(0.1);
     }
