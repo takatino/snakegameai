@@ -135,7 +135,7 @@ function reset() {
         myNumber = -1;
         generation += 1;
         console.log(population);
-        naturalSelection(0.1);
+        naturalSelection(0.05);
     }
 
 
