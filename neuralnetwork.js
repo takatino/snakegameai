@@ -7,7 +7,7 @@ class Network {
 
 
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
-            this.biases[i] = [randomG()];
+            this.biases[i] = [(randomG() * 2) - 1];
         }
 
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
@@ -15,7 +15,7 @@ class Network {
             for (let j = 0; j < this.sizes[i+1]; j++) {
                 this.weights[i][j] = new Array(this.sizes[i]);
                 for (let k = 0; k < this.sizes[i]; k++) {
-                    this.weights[i][j][k] = randomG();
+                    this.weights[i][j][k] = (randomG() * 2) - 1;
                 }
             }
         }
@@ -30,7 +30,7 @@ class Network {
 
     randomize(){
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
-            this.biases[i] = [randomG()];
+            this.biases[i] = [randomG() * 2 - 1];
         }
 
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
@@ -38,7 +38,7 @@ class Network {
             for (let j = 0; j < this.sizes[i+1]; j++) {
                 this.weights[i][j] = new Array(this.sizes[i]);
                 for (let k = 0; k < this.sizes[i]; k++) {
-                    this.weights[i][j][k] = randomG();
+                    this.weights[i][j][k] = randomG() * 2 - 1;
                 }
             }
         }

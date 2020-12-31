@@ -9,6 +9,13 @@ function populate(popsize){
 function naturalSelection(mutationRate){
     let accumFitness = 0;
     let totalFitness = 0;
+
+    population.sort(function(a, b) {
+        return b[0] - a[0];
+    });
+
+    console.log(JSON.parse(JSON.stringify(population)));
+
     for (let i = 0; i < population.length; i++) {
         totalFitness += population[i][0];
     }
@@ -36,6 +43,10 @@ function naturalSelection(mutationRate){
     let parentA = [];
     let parentB = [];
     let newpopulation = [];
+
+    for (let i = 0; i < population.length / 2; i++) {
+        population[i + (population.length / 2)] = JSON.parse(JSON.stringify(population[i]));
+    }
 
     for (let i = 0; i < population.length; i++) {
         selector = math.random();
@@ -85,7 +96,7 @@ function naturalSelection(mutationRate){
                     }
 
                     if (Math.random() < mutationRate) {
-                        baby[1][j][k][l] = randomG();
+                        baby[1][j][k][l] = randomG() * 2 - 1;
                     }
                 }
             }
@@ -101,7 +112,7 @@ function naturalSelection(mutationRate){
                 }
 
                 if (Math.random() < mutationRate) {
-                    baby[2][j] = [randomG()];
+                    baby[2][j] = [randomG() * 2 - 1];
                 }
             }
         }

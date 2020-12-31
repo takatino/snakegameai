@@ -124,6 +124,7 @@ function reset() {
     xSpeed = 1;
     ySpeed = 0;
     direction = "right";
+    saturation = 200;
     nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
     relocateApple();
 
@@ -134,7 +135,7 @@ function reset() {
     if (myNumber == population.length - 1) { //end of generation
         myNumber = -1;
         generation += 1;
-        console.log(population);
+        //console.log(population);
         naturalSelection(0.05);
     }
 
@@ -161,6 +162,7 @@ function update() {
             } 
         }
         score += 10;
+        saturation += 200;
         relocateApple();
     }
     else {
@@ -189,7 +191,7 @@ function draw() {
 }
 
 function compileScene() {
-    scene = new Array(1200).fill([0]);
+    scene = new Array(1207).fill([0]); 
     snake.forEach(function(value, index) {
         if (index < 1) {
             scene[value[0]*20 + value[1]] = [1];
@@ -198,6 +200,99 @@ function compileScene() {
         scene[400 + value[0]*20 + value[1]] = [1]; 
     });
     scene[800 + apple[0]*20 + apple[1]] = [1];
+    scene[1203] = [0];
+    scene[1204] = [0];
+    scene[1205] = [0];
+    scene[1206] = [0];
+    switch(direction) {
+        case "right":
+            if (snake.includes([snake[0][0] + 1, snake[0][1]]) || snake[0][0] + 1 == 20) {
+                scene[1200] = [1]; //forward
+            }
+            else {
+                scene[1200] = [0];
+            }
+            if (snake.includes([snake[0][0], snake[0][1] - 1]) || snake[0][1] - 1 == 0) {
+                scene[1201] = [1]; //leftside
+            }
+            else {
+                scene[1201] = [0];
+            }
+            if (snake.includes([snake[0][0], snake[0][1] + 1]) || snake[0][1] + 1 == 20) {
+                scene[1202] = [1]; //rightside
+            }
+            else {
+                scene[1202] = [0];
+            }
+            scene[1203] = [1];
+            break;
+        case "up":
+            if (snake.includes([snake[0][0], snake[0][1] - 1]) || snake[0][1] - 1 == 0) {
+                scene[1200] = [1]; //forward
+            }
+            else {
+                scene[1200] = [0];
+            }
+            if (snake.includes([snake[0][0] - 1, snake[0][1]]) || snake[0][0] - 1 == 0) {
+                scene[1201] = [1]; //leftside
+            }
+            else {
+                scene[1201] = [0];
+            }
+            if (snake.includes([snake[0][0] + 1, snake[0][1]]) || snake[0][0] + 1 == 20) {
+                scene[1202] = [1]; //rightside
+            }
+            else {
+                scene[1202] = [0];
+            }
+            scene[1204] = [1];
+            break;
+        case "left":
+            if (snake.includes([snake[0][0] - 1, snake[0][1]]) || snake[0][0] - 1 == 0) {
+                scene[1200] = [1]; //forward
+            }
+            else {
+                scene[1200] = [0];
+            }
+            if (snake.includes([snake[0][0], snake[0][1] + 1]) || snake[0][1] + 1 == 20) {
+                scene[1201] = [1]; //leftside
+            }
+            else {
+                scene[1201] = [0];
+            }
+            if (snake.includes([snake[0][0], snake[0][1] - 1]) || snake[0][0] - 1 == 0) {
+                scene[1202] = [1]; //rightside
+            }
+            else {
+                scene[1202] = [0];
+            }
+            scene[1205] = [1];
+
+            break;
+        case "down":
+            if (snake.includes([snake[0][0], snake[0][1] + 1]) || snake[0][1] + 1 == 20) {
+                scene[1200] = [1]; //forward
+            }
+            else {
+                scene[1200] = [0];
+            }
+            if (snake.includes([snake[0][0] + 1, snake[0][1]]) || snake[0][0] + 1 == 20) {
+                scene[1201] = [1]; //leftside
+            }
+            else {
+                scene[1201] = [0];
+            }
+            if (snake.includes([snake[0][0] - 1, snake[0][1]]) || snake[0][0] - 1 == 0) {
+                scene[1202] = [1]; //rightside
+            }
+            else {
+                scene[1202] = [0];
+            }
+            scene[1206] = [1];
+            break;
+    }
+
+
 }
 
 function think() {
@@ -234,14 +329,18 @@ function main() {
     draw();
     //buffer = false; //allow input
 
-    score += Math.sqrt((snake[0][0] - apple[0])**2 + (snake[0][1] - apple[1])**2)/(20 * Math.sqrt(2)) / 10; // score for being alive
+    saturation -= 1;
+    if (saturation <= 0) {
+        reset();
+    }
+    score += Math.sqrt((snake[0][0] - apple[0])**2 + (snake[0][1] - apple[1])**2)/(20 * Math.sqrt(2)) / 5; // score for being alive
 
     requestAnimationFrame(main);
 }
 
-network = new Network([1200, 16, 16, 3]); //network size
+network = new Network([1207, 16, 8, 3]); //network size
 
-populate(100);
+populate(50);
 reset();
 main();
 
