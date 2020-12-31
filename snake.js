@@ -39,8 +39,10 @@ let snake = [];
 let apple = [];
 let initialLength = 5;
 let nextPos = [];
-let score = 0;
+let score = 1;
 let myNumber = -1;
+let running = 1;
+let generation = 0;
 
 
 function turn(d) {
@@ -129,12 +131,17 @@ function reset() {
         population[myNumber][0] = score;
     }
 
-    if (myNumber == 49) {
+    if (myNumber == 49) { //end of generation
         myNumber = -1;
+        generation += 1;
+        console.log("Generation " + generation);
+        console.log(population);
+        naturalSelection(0.1);
     }
 
+
     myNumber += 1;
-    score = 0;
+    score = 1;
     network.load(population[myNumber][1], population[myNumber][2]);
 
 }
@@ -154,7 +161,7 @@ function update() {
                 return;
             } 
         }
-        score += 50;
+        score += 10;
         relocateApple();
     }
     else {
@@ -220,7 +227,7 @@ function think() {
     }
 }
 
-/*
+
 function main() {
     update();
     think();
@@ -228,20 +235,18 @@ function main() {
     draw();
     //buffer = false; //allow input
 
-    score += 1; // score for being alive
+    score += 0; // score for being alive
 
     requestAnimationFrame(main);
-}*/
+}
 
-network = new Network([1200, 16, 16, 3]);
-console.log(network.weights);
+network = new Network([1200, 16, 16, 16, 16, 3]);
 
-populate();
-console.log(population);
+populate(50);
 reset();
-//main();
+main();
 
-
+/*
 let main = setInterval(() => {
     update();
     think();
@@ -251,5 +256,6 @@ let main = setInterval(() => {
 
     score += 1; // score for being alive
 }, 100);
+*/
 
 //smoother snake movement
