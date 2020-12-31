@@ -48,13 +48,13 @@ class Network {
 
     load(w, b) {
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
-            this.biases[i] = b[i];
+            this.biases[i] = JSON.parse(JSON.stringify(b[i]));
         }
 
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
             for (let j = 0; j < this.sizes[i+1]; j++) {
                 for (let k = 0; k < this.sizes[i]; k++) {
-                    this.weights[i][j][k] = w[i][j][k];
+                    this.weights[i][j][k] = JSON.parse(JSON.stringify(w[i][j][k]));
                 }
             }
         }

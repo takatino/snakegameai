@@ -234,12 +234,12 @@ function main() {
     draw();
     //buffer = false; //allow input
 
-    score += 0; // score for being alive
+    score += 1; // score for being alive
 
     requestAnimationFrame(main);
 }
 
-network = new Network([1200, 16, 16, 16, 16, 3]);
+network = new Network([1200, 16, 16, 16, 16, 3]); //network size
 
 populate(50);
 reset();
