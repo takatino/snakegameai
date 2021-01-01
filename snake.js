@@ -124,7 +124,7 @@ function reset() {
     xSpeed = 1;
     ySpeed = 0;
     direction = "right";
-    saturation = 200;
+    saturation = 100;
     nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
     relocateApple();
 
@@ -161,8 +161,8 @@ function update() {
                 return;
             } 
         }
-        score += 5;
-        saturation += 200;
+        score += 10;
+        saturation += 50;
         relocateApple();
     }
     else {
@@ -191,107 +191,142 @@ function draw() {
 }
 
 function compileScene() {
-    scene = new Array(1207).fill([0]); 
-    snake.forEach(function(value, index) {
-        if (index < 1) {
-            scene[value[0]*20 + value[1]] = [1];
+    scene = new Array(24).fill([0]); 
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] + i && apple[1] == snake[0][1]) {
+            scene[0] = [0.05 * i];
         }
-        
-        scene[400 + value[0]*20 + value[1]] = [1]; 
-    });
-    scene[800 + apple[0]*20 + apple[1]] = [1];
-    scene[1203] = [0];
-    scene[1204] = [0];
-    scene[1205] = [0];
-    scene[1206] = [0];
-    switch(direction) {
-        case "right":
-            if (snake.includes([snake[0][0] + 1, snake[0][1]]) || snake[0][0] + 1 == 20) {
-                scene[1200] = [1]; //forward
-            }
-            else {
-                scene[1200] = [0];
-            }
-            if (snake.includes([snake[0][0], snake[0][1] - 1]) || snake[0][1] - 1 == 0) {
-                scene[1201] = [1]; //leftside
-            }
-            else {
-                scene[1201] = [0];
-            }
-            if (snake.includes([snake[0][0], snake[0][1] + 1]) || snake[0][1] + 1 == 20) {
-                scene[1202] = [1]; //rightside
-            }
-            else {
-                scene[1202] = [0];
-            }
-            scene[1203] = [1];
-            break;
-        case "up":
-            if (snake.includes([snake[0][0], snake[0][1] - 1]) || snake[0][1] - 1 == 0) {
-                scene[1200] = [1]; //forward
-            }
-            else {
-                scene[1200] = [0];
-            }
-            if (snake.includes([snake[0][0] - 1, snake[0][1]]) || snake[0][0] - 1 == 0) {
-                scene[1201] = [1]; //leftside
-            }
-            else {
-                scene[1201] = [0];
-            }
-            if (snake.includes([snake[0][0] + 1, snake[0][1]]) || snake[0][0] + 1 == 20) {
-                scene[1202] = [1]; //rightside
-            }
-            else {
-                scene[1202] = [0];
-            }
-            scene[1204] = [1];
-            break;
-        case "left":
-            if (snake.includes([snake[0][0] - 1, snake[0][1]]) || snake[0][0] - 1 == 0) {
-                scene[1200] = [1]; //forward
-            }
-            else {
-                scene[1200] = [0];
-            }
-            if (snake.includes([snake[0][0], snake[0][1] + 1]) || snake[0][1] + 1 == 20) {
-                scene[1201] = [1]; //leftside
-            }
-            else {
-                scene[1201] = [0];
-            }
-            if (snake.includes([snake[0][0], snake[0][1] - 1]) || snake[0][0] - 1 == 0) {
-                scene[1202] = [1]; //rightside
-            }
-            else {
-                scene[1202] = [0];
-            }
-            scene[1205] = [1];
 
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] + i && snake[j][1] == snake[0][1]) {
+                scene[8] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][0] + i == 20) {
+            scene[16] = [0.05 * i];
             break;
-        case "down":
-            if (snake.includes([snake[0][0], snake[0][1] + 1]) || snake[0][1] + 1 == 20) {
-                scene[1200] = [1]; //forward
-            }
-            else {
-                scene[1200] = [0];
-            }
-            if (snake.includes([snake[0][0] + 1, snake[0][1]]) || snake[0][0] + 1 == 20) {
-                scene[1201] = [1]; //leftside
-            }
-            else {
-                scene[1201] = [0];
-            }
-            if (snake.includes([snake[0][0] - 1, snake[0][1]]) || snake[0][0] - 1 == 0) {
-                scene[1202] = [1]; //rightside
-            }
-            else {
-                scene[1202] = [0];
-            }
-            scene[1206] = [1];
-            break;
+        }
     }
 
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] && apple[1] == snake[0][1] - i) {
+            scene[1] = [0.05 * i];
+        }
+        
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] && snake[j][1] == snake[0][1] - i) {
+                scene[9] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][1] - i == -1) {
+            scene[17] = [0.05 * i];
+            break;
+        }
+    }
+
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] - i && apple[1] == snake[0][1]) {
+            scene[2] = [0.05 * i];
+        }
+        
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] - i && snake[j][1] == snake[0][1]) {
+                scene[10] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][0] - i == -1) {
+            scene[18] = [0.05 * i];
+            break;
+        }
+    }
+
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] && apple[1] == snake[0][1] + i) {
+            scene[3] = [0.05 * i];
+        }
+        
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] && snake[j][1] == snake[0][1] + i) {
+                scene[11] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][1] + i == 20) {
+            scene[19] = [0.05 * i];
+            break;
+        }
+    }
+
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] + i, apple[1] == snake[0][1] - i) {
+            scene[4] = [0.05 * i];
+        }
+        
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] + i && snake[j][1] == snake[0][1] - i) {
+                scene[12] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][0] + i == 20 || snake[0][1] - i == -1) {
+            scene[20] = [0.05 * i];
+            break;
+        }
+    }
+
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] - i && apple[1] == snake[0][1] - i) {
+            scene[5] = [0.05 * i];
+        }
+        
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] - i && snake[j][1] == snake[0][1] - i) {
+                scene[13] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][0] - i == -1 || snake[0][1] - i == -1) {
+            scene[21] = [0.05 * i];
+            break;
+        }
+    }
+
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] - i && apple[1] == snake[0][1] + i) {
+            scene[6] = [0.05 * i];
+        }
+        
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] - i && snake[j][1] == snake[0][1] + i) {
+                scene[14] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][0] - i == -1 || snake[0][1] + i == 20) {
+            scene[22] = [0.05 * i];
+            break;
+        }
+    }
+
+    for (let i = 1; i < 20; i ++ ) {
+        if (apple[0] == snake[0][0] + i && apple[1] == snake[0][1] + i) {
+            scene[7] = [0.05 * i];
+        }
+        
+        for (let j = 0; j < snake.length; j++) {
+            if (snake[j][0] == snake[0][0] + i && snake[j][1] == snake[0][1] + i) {
+                scene[15] = [0.05 * i];
+            }
+        }
+
+        if (snake[0][0] + i == 20 || snake[0][1] + i == 20) {
+            scene[23] = [0.08 * i];
+            break;
+        }
+    }
 
 }
 
@@ -333,14 +368,14 @@ function main() {
     if (saturation <= 0) {
         reset();
     }
-    score += Math.sqrt((snake[0][0] - apple[0])**2 + (snake[0][1] - apple[1])**2)/(20 * Math.sqrt(2)) / 5; // score for being alive
+    score += 1; // score for being alive
 
     requestAnimationFrame(main);
 }
 
-network = new Network([1207, 16, 16, 3]); //network size
+network = new Network([24, 16, 16, 3]); //network size
 
-populate(50);
+populate(200);
 reset();
 main();
 
