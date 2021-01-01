@@ -161,7 +161,7 @@ function update() {
                 return;
             } 
         }
-        score += 10;
+        score += 5;
         saturation += 200;
         relocateApple();
     }
@@ -338,7 +338,7 @@ function main() {
     requestAnimationFrame(main);
 }
 
-network = new Network([1207, 16, 8, 3]); //network size
+network = new Network([1207, 16, 16, 3]); //network size
 
 populate(50);
 reset();
