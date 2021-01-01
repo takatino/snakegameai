@@ -121,7 +121,7 @@ function naturalSelection(mutationRate){
                     }
 
                     if (Math.random() < mutationRate) {
-                        baby[1][j][k][l] = randomG() * 2 - 1;
+                        baby[1][j][k][l] = randomG() * 4 - 2;
                     }
                 }
             }
@@ -137,7 +137,7 @@ function naturalSelection(mutationRate){
                 }
 
                 if (Math.random() < mutationRate) {
-                    baby[2][j] = [randomG() * 2 - 1];
+                    baby[2][j] = [randomG() * 4 - 2];
                 }
             }
         }
