@@ -34,9 +34,9 @@ class Network {
         }
 
         for (let i = 0; i < this.numberOfLayers - 1; i++) {
-            this.weights[i] = [new Array(this.sizes[i+1])];
+            //this.weights[i] = [new Array(this.sizes[i+1])];
             for (let j = 0; j < this.sizes[i+1]; j++) {
-                this.weights[i][j] = new Array(this.sizes[i]);
+                //this.weights[i][j] = new Array(this.sizes[i]);
                 for (let k = 0; k < this.sizes[i]; k++) {
                     this.weights[i][j][k] = randomG() * 2 - 1;
                 }

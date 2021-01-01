@@ -5,6 +5,7 @@ const scale = 20; //tile size
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 
+let loopspeed = 1;
 let xSpeed = 1;
 let ySpeed = 0;
 let direction = "right"; //right, up, left, down
@@ -44,6 +45,7 @@ let myNumber = -1;
 let running = 1;
 let generation = 0;
 let generationFitness = [];
+let generationBest = [];
 
 function turn(d) {
     if (d == "left") {
@@ -136,7 +138,7 @@ function reset() {
         myNumber = -1;
         generation += 1;
         //console.log(population);
-        naturalSelection(0.05);
+        naturalSelection(0.1);
     }
 
 
@@ -161,7 +163,7 @@ function update() {
                 return;
             } 
         }
-        score += 10;
+        score += 20;
         saturation += 50;
         relocateApple();
     }
@@ -191,7 +193,7 @@ function draw() {
 }
 
 function compileScene() {
-    scene = new Array(24).fill([0]); 
+    scene.fill([0]); 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] + i && apple[1] == snake[0][1]) {
             scene[0] = [0.05 * i];
@@ -328,6 +330,35 @@ function compileScene() {
         }
     }
 
+    if (direction == "right" && apple[0] >= snake[0][0]) {
+        scene[24] = [(Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1])) + Math.PI/2)/Math.PI];
+    }
+    else if (direction == "up" && apple[1] <= snake[0][1]) {
+        scene[24] = [(Math.atan((apple[1] - snake[0][1])/(apple[0] - snake[0][0])) + Math.PI/2)/Math.PI];
+    }
+    else if (direction == "left" && apple[0] <= snake[0][0]) {
+        scene[24] = [(Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1])) + Math.PI/2)/Math.PI];
+    }
+    else if (direction == "down" && apple[1] >= snake[0][1]) {
+        scene[24] = [(Math.atan((apple[1] - snake[0][1])/(apple[0] - snake[0][0])) + Math.PI/2)/Math.PI];
+    }
+
+    /*
+    switch (direction) {
+        case "right":
+            scene[25] = [1];
+            break;
+        case "up":
+            scene[26] = [1];
+            break;
+        case "left":
+            scene[27] = [1];
+            break;
+        case "down":
+            scene[28] = [1];
+            break;
+                            
+    }*/
 }
 
 function think() {
@@ -356,7 +387,7 @@ function think() {
     }
 }
 
-
+/*
 function main() {
     update();
     think();
@@ -371,15 +402,16 @@ function main() {
     score += 1; // score for being alive
 
     requestAnimationFrame(main);
-}
+}*/
 
-network = new Network([24, 16, 16, 3]); //network size
+network = new Network([25, 16, 16, 3]); //network size
+scene = new Array(25).fill([0]);
 
 populate(200);
 reset();
-main();
+//main();
 
-/*
+
 let main = setInterval(() => {
     update();
     think();
@@ -387,8 +419,12 @@ let main = setInterval(() => {
     draw();
     //buffer = false; //allow input
 
+    saturation -= 1;
+    if (saturation <= 0) {
+        reset();
+    }
     score += 1; // score for being alive
-}, 100);
-*/
+}, loopspeed);
+
 
 //smoother snake movement
