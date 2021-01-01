@@ -261,7 +261,7 @@ function compileScene() {
     }
 
     for (let i = 1; i < 20; i ++ ) {
-        if (apple[0] == snake[0][0] + i, apple[1] == snake[0][1] - i) {
+        if (apple[0] == snake[0][0] + i && apple[1] == snake[0][1] - i) {
             scene[4] = [0.05 * i];
         }
         
@@ -323,7 +323,7 @@ function compileScene() {
         }
 
         if (snake[0][0] + i == 20 || snake[0][1] + i == 20) {
-            scene[23] = [0.08 * i];
+            scene[23] = [0.05 * i];
             break;
         }
     }
