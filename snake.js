@@ -5,7 +5,7 @@ const scale = 20; //tile size
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 
-let loopspeed = 1;
+let loopspeed = 0;
 let xSpeed = 1;
 let ySpeed = 0;
 let direction = "right"; //right, up, left, down
@@ -42,7 +42,7 @@ let initialLength = 5;
 let nextPos = [];
 let score = 1;
 let myNumber = -1;
-let running = 1;
+let running = 0;
 let generation = 0;
 let generationFitness = [];
 let generationBest = [];
@@ -126,19 +126,25 @@ function reset() {
     xSpeed = 1;
     ySpeed = 0;
     direction = "right";
-    saturation = 100;
+    saturation = 200;
     nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
     relocateApple();
 
     if (myNumber >= 0) {
-        population[myNumber][0] = score;
+        if (score > 1) {
+            population[myNumber][0] = score;
+        }
+        else {
+            population[myNumber][0] = 1;
+        }
+
     }
 
     if (myNumber == population.length - 1) { //end of generation
         myNumber = -1;
         generation += 1;
         //console.log(population);
-        naturalSelection(0.1);
+        naturalSelection(0.05);
     }
 
 
@@ -148,10 +154,25 @@ function reset() {
 
 }
 
+let distance = 0;
+let nextdistance = 0;
+
 function update() {
     nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
     if (nextPos[0] == 20 || nextPos[0] < 0) {reset();}
     if (nextPos[1] == 20 || nextPos[1] < 0) {reset();}
+
+    distance = Math.sqrt((apple[0] - snake[0][0])**2 + (apple[1] - snake[0][1])**2);
+    nextdistance = Math.sqrt((apple[0] - nextPos[0])**2 + (apple[1] - nextPos[1])**2);
+    
+    
+    if (nextdistance <= distance) {
+        score += 0.1;
+    }
+    else {
+        score -= -0.11;
+    }
+    
 
     if (nextPos[0] == apple[0] && nextPos[1] == apple[1]){
         snake.push([-1, -1]);   
@@ -163,8 +184,8 @@ function update() {
                 return;
             } 
         }
-        score += 20;
-        saturation += 50;
+        score += 10;
+        saturation += 100;
         relocateApple();
     }
     else {
@@ -196,154 +217,174 @@ function compileScene() {
     scene.fill([0]); 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] + i && apple[1] == snake[0][1]) {
-            scene[0] = [0.05 * i];
+            scene[0] = [Math.exp(1 - i)];
         }
 
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] + i && snake[j][1] == snake[0][1]) {
-                scene[8] = [0.05 * i];
+                scene[8] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][0] + i == 20) {
-            scene[16] = [0.05 * i];
+            scene[16] = [Math.exp(1 - i)];
             break;
         }
     }
 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] && apple[1] == snake[0][1] - i) {
-            scene[1] = [0.05 * i];
+            scene[1] = [Math.exp(1 - i)];
         }
         
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] && snake[j][1] == snake[0][1] - i) {
-                scene[9] = [0.05 * i];
+                scene[9] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][1] - i == -1) {
-            scene[17] = [0.05 * i];
+            scene[17] = [Math.exp(1 - i)];
             break;
         }
     }
 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] - i && apple[1] == snake[0][1]) {
-            scene[2] = [0.05 * i];
+            scene[2] = [Math.exp(1 - i)];
         }
         
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] - i && snake[j][1] == snake[0][1]) {
-                scene[10] = [0.05 * i];
+                scene[10] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][0] - i == -1) {
-            scene[18] = [0.05 * i];
+            scene[18] = [Math.exp(1 - i)];
             break;
         }
     }
 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] && apple[1] == snake[0][1] + i) {
-            scene[3] = [0.05 * i];
+            scene[3] = [Math.exp(1 - i)];
         }
         
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] && snake[j][1] == snake[0][1] + i) {
-                scene[11] = [0.05 * i];
+                scene[11] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][1] + i == 20) {
-            scene[19] = [0.05 * i];
+            scene[19] = [Math.exp(1 - i)];
             break;
         }
     }
 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] + i && apple[1] == snake[0][1] - i) {
-            scene[4] = [0.05 * i];
+            scene[4] = [Math.exp(1 - i)];
         }
         
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] + i && snake[j][1] == snake[0][1] - i) {
-                scene[12] = [0.05 * i];
+                scene[12] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][0] + i == 20 || snake[0][1] - i == -1) {
-            scene[20] = [0.05 * i];
+            scene[20] = [Math.exp(1 - i)];
             break;
         }
     }
 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] - i && apple[1] == snake[0][1] - i) {
-            scene[5] = [0.05 * i];
+            scene[5] = [Math.exp(1 - i)];
         }
         
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] - i && snake[j][1] == snake[0][1] - i) {
-                scene[13] = [0.05 * i];
+                scene[13] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][0] - i == -1 || snake[0][1] - i == -1) {
-            scene[21] = [0.05 * i];
+            scene[21] = [Math.exp(1 - i)];
             break;
         }
     }
 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] - i && apple[1] == snake[0][1] + i) {
-            scene[6] = [0.05 * i];
+            scene[6] = [Math.exp(1 - i)];
         }
         
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] - i && snake[j][1] == snake[0][1] + i) {
-                scene[14] = [0.05 * i];
+                scene[14] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][0] - i == -1 || snake[0][1] + i == 20) {
-            scene[22] = [0.05 * i];
+            scene[22] = [Math.exp(1 - i)];
             break;
         }
     }
 
     for (let i = 1; i < 20; i ++ ) {
         if (apple[0] == snake[0][0] + i && apple[1] == snake[0][1] + i) {
-            scene[7] = [0.05 * i];
+            scene[7] = [Math.exp(1 - i)];
         }
         
         for (let j = 0; j < snake.length; j++) {
             if (snake[j][0] == snake[0][0] + i && snake[j][1] == snake[0][1] + i) {
-                scene[15] = [0.05 * i];
+                scene[15] = [Math.exp(1 - i)];
             }
         }
 
         if (snake[0][0] + i == 20 || snake[0][1] + i == 20) {
-            scene[23] = [0.05 * i];
+            scene[23] = [Math.exp(1 - i)];
             break;
         }
     }
 
+    
     if (direction == "right" && apple[0] >= snake[0][0]) {
-        scene[24] = [(Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1])) + Math.PI/2)/Math.PI];
+        if ((apple[0] - snake[0][0])/(apple[1] - snake[0][1]) >= 0) {
+            scene[24] = [(Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1])))/Math.PI];
+        }
+        else {
+            scene[24] = [(Math.PI + (Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1]))))/Math.PI]
+        }
     }
     else if (direction == "up" && apple[1] <= snake[0][1]) {
-        scene[24] = [(Math.atan((apple[1] - snake[0][1])/(apple[0] - snake[0][0])) + Math.PI/2)/Math.PI];
+        if (-(apple[1] - snake[0][1])/(apple[0] - snake[0][0]) >= 0) {
+            scene[24] = [(Math.atan(-(apple[1] - snake[0][1])/(apple[0] - snake[0][0])))/Math.PI];
+        }
+        else {
+            scene[24] = [(Math.PI + (Math.atan(-(apple[1] - snake[0][1])/(apple[0] - snake[0][0]))))/Math.PI];
+        }
     }
     else if (direction == "left" && apple[0] <= snake[0][0]) {
-        scene[24] = [(Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1])) + Math.PI/2)/Math.PI];
+        if ((apple[0] - snake[0][0])/(apple[1] - snake[0][1]) >= 0) {
+            scene[24] = [(Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1])))/Math.PI];
+        }
+        else {
+            scene[24] = [(Math.PI + (Math.atan((apple[0] - snake[0][0])/(apple[1] - snake[0][1]))))/Math.PI];
+        }
     }
     else if (direction == "down" && apple[1] >= snake[0][1]) {
-        scene[24] = [(Math.atan((apple[1] - snake[0][1])/(apple[0] - snake[0][0])) + Math.PI/2)/Math.PI];
-    }
-
-    /*
+        if (-(apple[1] - snake[0][1])/(apple[0] - snake[0][0]) >= 0) {
+            scene[24] = [(Math.atan(-(apple[1] - snake[0][1])/(apple[0] - snake[0][0])))/Math.PI];
+        }
+        else {
+            scene[24] = [(Math.PI + (Math.atan(-(apple[1] - snake[0][1])/(apple[0] - snake[0][0]))))/Math.PI];
+        }
+    } 
+    
     switch (direction) {
         case "right":
             scene[25] = [1];
@@ -356,9 +397,11 @@ function compileScene() {
             break;
         case "down":
             scene[28] = [1];
-            break;
-                            
-    }*/
+            break;               
+    } 
+
+
+    scene[29] = [Math.sqrt((apple[0] - snake[0][0])**2 + (apple[1] - snake[0][1])**2)/(20 * Math.sqrt(2))];
 }
 
 function think() {
@@ -399,15 +442,14 @@ function main() {
     if (saturation <= 0) {
         reset();
     }
-    score += 1; // score for being alive
 
-    requestAnimationFrame(main);
+    if (running) {requestAnimationFrame(main);}
 }*/
 
-network = new Network([25, 16, 16, 3]); //network size
-scene = new Array(25).fill([0]);
+network = new Network([30, 16, 8, 8, 3]); //network size
+scene = new Array(30).fill([0]);
 
-populate(200);
+populate(100);
 reset();
 //main();
 
@@ -423,8 +465,8 @@ let main = setInterval(() => {
     if (saturation <= 0) {
         reset();
     }
-    score += 1; // score for being alive
-}, loopspeed);
+    //score += 0.1;
+}, loopspeed); 
 
 
 //smoother snake movement

@@ -41,7 +41,7 @@ function naturalSelection(mutationRate){
         population[i][0] += accumFitness;
     }
 
-    for (let i = 0; i < population.length / 2; i++) {
+    for (let i = 0; i < population.length * 0.3; i++) { //how many are selected for breeding
         selectedpopulation.push(population[i]);
     }
 
@@ -121,7 +121,7 @@ function naturalSelection(mutationRate){
                     }
 
                     if (Math.random() < mutationRate) {
-                        baby[1][j][k][l] = randomG() * 4 - 2;
+                        baby[1][j][k][l] = randomG();
                     }
                 }
             }
@@ -137,7 +137,7 @@ function naturalSelection(mutationRate){
                 }
 
                 if (Math.random() < mutationRate) {
-                    baby[2][j] = [randomG() * 4 - 2];
+                    baby[2][j] = [randomG()];
                 }
             }
         }
