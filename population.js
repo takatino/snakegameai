@@ -41,7 +41,7 @@ function naturalSelection(mutationRate){
         population[i][0] += accumFitness;
     }
 
-    for (let i = 0; i < population.length * 0.3; i++) { //how many are selected for breeding
+    for (let i = 0; i < population.length * 0.4; i++) { //how many are selected for breeding
         selectedpopulation.push(population[i]);
     }
 
