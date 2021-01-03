@@ -167,10 +167,10 @@ function update() {
     
     
     if (nextdistance <= distance) {
-        score += 0.1;
+        score += 1;
     }
     else {
-        score -= -0.11;
+        score -= -1.5;
     }
     
 
@@ -446,7 +446,7 @@ function main() {
     if (running) {requestAnimationFrame(main);}
 }*/
 
-network = new Network([30, 16, 8, 8, 3]); //network size
+network = new Network([30, 16, 16, 8, 3]); //network size
 scene = new Array(30).fill([0]);
 
 populate(100);
