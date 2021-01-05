@@ -1,6 +1,6 @@
 # snakegameai
 
-personal project where i learn ai and machine learning concepts through the classic arcade game "snake"
+personal project where i learn ai and machine learning concepts (mainly neural networks & reinforcement learning) through the classic arcade game "snake"
 
 resources:
 
