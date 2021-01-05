@@ -1,7 +1,7 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
-const scale = 20; //tile size
+const scale = 10; //tile size
 const rows = canvas.height / scale;
 const columns = canvas.width / scale;
 
@@ -40,12 +40,14 @@ let snake = [];
 let apple = [];
 let initialLength = 5;
 let nextPos = [];
-let score = 1;
+let score = 0;
+let secretscore = 1;
 let myNumber = -1;
 let running = 0;
 let generation = 0;
 let generationFitness = [];
 let generationBest = [];
+let textdata = "";
 
 function turn(d) {
     if (d == "left") {
@@ -130,9 +132,10 @@ function reset() {
     nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
     relocateApple();
 
+    secretscore += score;
     if (myNumber >= 0) {
-        if (score > 1) {
-            population[myNumber][0] = score;
+        if (secretscore > 1) {
+            population[myNumber][0] = secretscore;
         }
         else {
             population[myNumber][0] = 1;
@@ -149,7 +152,8 @@ function reset() {
 
 
     myNumber += 1;
-    score = 1;
+    score = 0;
+    secretscore = 1;
     network.load(population[myNumber][1], population[myNumber][2]);
 
 }
@@ -167,10 +171,10 @@ function update() {
     
     
     if (nextdistance <= distance) {
-        score += 1;
+        secretscore += 1;
     }
     else {
-        score -= -1.5;
+        secretscore -= -1.5;
     }
     
 
@@ -211,6 +215,11 @@ function draw() {
     }
     ctx.fillStyle = "#fc6272"; //apple red
     ctx.fillRect(apple[0]*scale, apple[1]*scale, scale, scale);
+
+    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+    ctx.font = "10px Arial";
+    textdata = "gen: " + generation + ", id: " + myNumber + ", score: " + score;
+    ctx.fillText(textdata, 10, 20);
 }
 
 function compileScene() {
@@ -465,7 +474,7 @@ let main = setInterval(() => {
     if (saturation <= 0) {
         reset();
     }
-    //score += 0.1;
+    
 }, loopspeed); 
 
 
