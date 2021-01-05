@@ -436,8 +436,8 @@ let main = setInterval(() => {
     if (saturation <= 0) {
         reset();
     }
-    
-}, loopspeed); 
+
+}, loopspeed);  
 
 
 //smoother snake movement
