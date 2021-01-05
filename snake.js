@@ -1,4 +1,4 @@
-const canvas = document.querySelector("canvas");
+const canvas = document.getElementById("snakegame");
 const ctx = canvas.getContext("2d");
 
 const scale = 10; //tile size
@@ -10,31 +10,6 @@ let xSpeed = 1;
 let ySpeed = 0;
 let direction = "right"; //right, up, left, down
 let buffer = false;
-
-/*
-document.addEventListener("keydown", function(e) {
-    if (e.keyCode == 37 && xSpeed == 0 && buffer == false) { // Player holding left
-        xSpeed = -1;
-        ySpeed = 0;
-        buffer = true;
-	}
-    else if (e.keyCode == 38 && ySpeed == 0 && buffer == false) { // Player holding up
-		xSpeed = 0;
-        ySpeed = -1;
-        buffer = true;
-    }
-	else if (e.keyCode == 39 && xSpeed == 0 && buffer == false) { // Player holding right
-		xSpeed = 1;
-        ySpeed = 0;
-        buffer = true;
-	}
-	else if (e.keyCode == 40 && ySpeed == 0 && buffer == false) { // Player holding down
-		xSpeed = 0;
-        ySpeed = 1;
-        buffer = true;
-    }
-});
-*/
 
 let snake = [];
 let apple = [];
@@ -48,6 +23,17 @@ let generation = 0;
 let generationFitness = [];
 let generationBest = [];
 let textdata = "";
+
+let distance = 0;
+let nextdistance = 0;
+
+function setup() {
+    network = new Network([30, 16, 16, 8, 3]); //network size
+    scene = new Array(30).fill([0]);
+
+    populate(100);
+    reset();
+}
 
 function turn(d) {
     if (d == "left") {
@@ -158,8 +144,6 @@ function reset() {
 
 }
 
-let distance = 0;
-let nextdistance = 0;
 
 function update() {
     nextPos = [(snake[0][0] + xSpeed), (snake[0][1] + ySpeed)];
@@ -439,29 +423,7 @@ function think() {
     }
 }
 
-/*
-function main() {
-    update();
-    think();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    draw();
-    //buffer = false; //allow input
-
-    saturation -= 1;
-    if (saturation <= 0) {
-        reset();
-    }
-
-    if (running) {requestAnimationFrame(main);}
-}*/
-
-network = new Network([30, 16, 16, 8, 3]); //network size
-scene = new Array(30).fill([0]);
-
-populate(100);
-reset();
-//main();
-
+setup();
 
 let main = setInterval(() => {
     update();
@@ -479,3 +441,4 @@ let main = setInterval(() => {
 
 
 //smoother snake movement
+
