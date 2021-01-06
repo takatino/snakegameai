@@ -131,9 +131,9 @@ function reset() {
 
     if (myNumber == population.length - 1) { //end of generation
         myNumber = -1;
-        generation += 1;
         //console.log(population);
         naturalSelection(0.05);
+        generation += 1;
     }
 
 

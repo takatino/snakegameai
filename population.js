@@ -16,7 +16,11 @@ function naturalSelection(mutationRate){
         return b[0] - a[0];
     });
 
-    console.log(JSON.parse(JSON.stringify(population)));
+
+    if (generation % 50 == 0) {
+        console.log(JSON.parse(JSON.stringify(population)));
+        console.log(JSON.stringify(population[0]));
+    }
 
     for (let i = 0; i < population.length; i++) {
         totalFitness += population[i][0];
