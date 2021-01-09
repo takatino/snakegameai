@@ -28,7 +28,7 @@ let distance = 0;
 let nextdistance = 0;
 
 function setup() {
-    network = new Network([30, 16, 16, 8, 3]); //network size
+    network = new Network([30, 16, 16, 3]); //network size
     scene = new Array(30).fill([0]);
 
     populate(100);
